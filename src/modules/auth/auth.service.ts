@@ -18,8 +18,8 @@ export class AuthService {
   async generateToken(userId: string) {
     const payload = { userId };
     const token = this.jwtService.sign(payload);
-    await this.redisService.set(`token:${userId}`, token, 3600);
-    await this.redisService.set(token, userId, 3600);
+    await this.redisService.set(`token:${userId}`, token, 86400);
+    await this.redisService.set(token, userId, 86400);
     return token;
   }
 

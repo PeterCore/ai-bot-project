@@ -33,7 +33,7 @@ export class JwtAuthGuard implements CanActivate {
       return true;
     }
     const request = context.switchToHttp().getRequest();
-    this.logger.log(`All headers: ${JSON.stringify(request.headers)}`);
+    // this.logger.log(`All headers: ${JSON.stringify(request.headers)}`);
     const authorization = request.headers['authorization'] || '';
     if (!authorization) {
       throw new HttpException(

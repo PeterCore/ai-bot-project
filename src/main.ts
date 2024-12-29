@@ -28,6 +28,6 @@ async function bootstrap() {
   // 启动监听端口
   const port = 3000;
   await app.listen(port);
-  Logger.log(`Server is 12333 running on http://localhost:${port}`);
+  Logger.log(`Server is running on http://localhost:${port}`);
 }
 bootstrap();
