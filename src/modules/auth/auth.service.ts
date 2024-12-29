@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { RedisService } from '../../common/redis/redis.service';
@@ -12,12 +12,14 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly redisService: RedisService,
   ) {}
+  // private readonly logger = new Logger(AuthService.name);
 
   // 生成 token 并缓存到 Redis
   async generateToken(userId: string) {
     const payload = { userId };
     const token = this.jwtService.sign(payload);
     await this.redisService.set(`token:${userId}`, token, 3600);
+    await this.redisService.set(token, userId, 3600);
     return token;
   }
 

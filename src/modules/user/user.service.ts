@@ -17,6 +17,25 @@ export class UserService {
     return user;
   }
 
+  /**
+   * 验证用户凭证（根据实际业务实现）
+   */
+  async validateUser(phone: string, code: string): Promise<User | null> {
+    // 这里应有验证码的验证逻辑，例如从 Redis 中获取验证码并比对
+    // 示例中假设验证码始终有效
+    return this.prisma.user.findUnique({ where: { phone } });
+  }
+
+  //get User info from current token
+  async getUserByCurrentToken(token: string): Promise<User> {
+    const userId = await this.redisService.get(`userId:${token}`);
+    if (!userId) {
+      return null;
+    }
+    const user = await this.getUserById(userId);
+    return user;
+  }
+
   // 根据id获取用户
   async getUserById(userId: string): Promise<User> {
     const cacheKey = `user:${userId}`;
