@@ -49,7 +49,7 @@ export class JwtAuthGuard implements CanActivate {
     try {
       // 验证 Token 是否有效
       const payload = this.jwtService.verify(token);
-
+      this.logger.log(`token payload is ${JSON.stringify(payload)}`);
       // 从 Redis 查询 Token 是否存在
       const userId = await this.redisService.get(token);
       if (!userId) {

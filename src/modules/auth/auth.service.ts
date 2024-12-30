@@ -23,6 +23,13 @@ export class AuthService {
     return token;
   }
 
+  async generateRefreshToken(userId: string) {
+    const payload = { userId };
+    const refreshToken = this.jwtService.sign(payload);
+    await this.redisService.set(`refreshToken:${userId}`, refreshToken, 86400);
+    return refreshToken;
+  }
+
   // 手机验证码登录
   async loginWithPhone(phone: string, code: string) {
     // 验证短信 code，示例略
