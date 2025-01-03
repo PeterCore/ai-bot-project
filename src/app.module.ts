@@ -5,6 +5,7 @@ import { RedisModule } from './common/redis/redis.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
+import { ChatService } from './chat/chat.service';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { LoggerMiddleware } from './common/middlewares/logger.middleware';
     UserModule,
     AuthModule,
   ],
-  providers: [PrismaService],
+  providers: [PrismaService, ChatService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

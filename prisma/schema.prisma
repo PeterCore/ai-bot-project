@@ -25,4 +25,34 @@ model User {
   providerId String?
   createAt   DateTime @default(now())
   updateAt   DateTime @updatedAt
+
+  ChatTopic ChatTopic[]
+
+  ChatMessage ChatMessage[]
+}
+
+model ChatTopic {
+  id        Int           @id @default(autoincrement())
+  chatId    String        @unique @default(uuid())
+  user      User          @relation(fields: [userId], references: [userId])
+  userId    String
+  createdAt DateTime      @default(now())
+  messages  ChatMessage[]
+}
+
+model ChatMessage {
+  id          Int       @id @default(autoincrement())
+  messageId   Int       @unique @default(autoincrement())
+  chatTopic   ChatTopic @relation(fields: [chatTopicId], references: [id])
+  chatTopicId Int
+  user        User      @relation(fields: [userId], references: [userId])
+  userId      String
+  role        Role
+  content     String
+  createdAt   DateTime  @default(now())
+}
+
+enum Role {
+  user
+  ai
 }

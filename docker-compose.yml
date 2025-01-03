@@ -23,7 +23,9 @@ services:
       - '6379:6379'
 
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: ai-chat-project
     restart: always
     depends_on:
