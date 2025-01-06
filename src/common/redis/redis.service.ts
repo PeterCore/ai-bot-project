@@ -46,33 +46,16 @@ export class RedisService {
     await this.redisClient.del(key);
   }
 
-  /**
-   * 添加消息到用户的聊天主题的最新消息列表
-   * @param userId 用户ID
-   * @param chatId 聊天主题ID
-   * @param message 聊天消息
-   */
-  async addLatestMessage(userId: string, chatId: string, message: ChatMessage) {
-    const key = `user:${userId}:chat:${chatId}:latest_messages`;
-    const messageData = JSON.stringify(message);
-    await this.redisClient.lpush(key, messageData);
-    await this.redisClient.ltrim(key, 0, 9); // 保持最新 10 条
+  async lpush(key: string, value: any) {
+    await this.redisClient.lpush(key, value);
   }
 
-  /**
-   * 获取用户的聊天主题的最新 10 条消息
-   * @param userId 用户ID
-   * @param chatId 聊天主题ID
-   */
-  async getLatestMessages(
-    userId: string,
-    chatId: string,
-  ): Promise<ChatMessage[]> {
-    const key = `user:${userId}:chat:${chatId}:latest_messages`;
-    const messages = await this.redisClient.lrange(key, 0, 9);
-    return messages.map((msg) => JSON.parse(msg));
+  async ltrim(key: string, start: number | string, end: number | string) {
+    await this.redisClient.ltrim(key, start, end); // 保持最新 10 条
   }
-
+  async lrange(key: string, start: number | string, stop: number | string) {
+    return this.redisClient.lrange(key, start, stop);
+  }
   /**
    * 存储 Refresh Token
    */
